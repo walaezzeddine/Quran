@@ -102,6 +102,20 @@ async function queryHuggingFace(audioBuffer, mimeType) {
   return response.data;
 }
 
+const getDataPerPage = (pageNumber) => {
+  const filePath = path.join(__dirname, 'pages', `${pageNumber}.json`);
+  console.log(`📄 Fetching Quran page data for page ${pageNumber} from:`, filePath);
+  
+  // Use readFileSync (synchronous) instead of readFile
+  const data = fs.readFileSync(filePath, 'utf8');
+  console.log(data);
+  
+  const jsonData = JSON.parse(data);
+  console.log(`📄 Successfully loaded Quran page ${pageNumber}`, jsonData);
+  
+  return jsonData;
+}
+
 // Health check endpoint
 app.get('/', (req, res) => {
   res.json({ 
@@ -148,9 +162,51 @@ app.post('/test-upload', upload.single('file'), (req, res) => {
   });
 });
 
+
+app.get('/data/pages/:pageNumber', (req, res) => {
+  try {
+    const pageNumber = req.params.pageNumber;
+    
+    if (!/^\d+$/.test(pageNumber) || parseInt(pageNumber) <= 0) {
+      return res.status(400).json({ error: 'Invalid page number' });
+    }
+    
+    const filePath = path.join(__dirname, 'pages', `${pageNumber}.json`);
+    console.log(`📄 Fetching Quran page data for page ${pageNumber} from:`, filePath);
+    
+    // Use readFileSync (synchronous) instead of readFile
+    const data = fs.readFileSync(filePath, 'utf8');
+    console.log(data);
+    
+    const jsonData = JSON.parse(data);
+    console.log(`📄 Successfully loaded Quran page ${pageNumber}`, jsonData);
+    
+    // Don't forget to send the response!
+    res.json(jsonData);
+    
+  } catch (error) {
+    console.error('Error reading page:', error);
+    if (error.code === 'ENOENT') {
+      res.status(404).json({ error: 'Page not found' });
+    } else if (error instanceof SyntaxError) {
+      res.status(500).json({ error: 'Invalid JSON format' });
+    } else {
+      res.status(500).json({ error: 'Server error' });
+    }
+  }
+});
 // Transcription endpoint with Hugging Face Whisper
 app.post('/transcribe', upload.single('file'), async (req, res) => {
   const startTime = Date.now();
+  const ayah = req.query.ayah;
+  const page = req.query.page;
+  const expectedAyahText = getDataPerPage(page).surahs[0].ayahs.find(a => a.ayahNum === parseInt(ayah))?.words
+  .filter(word => !/^[٠-٩]+$/.test(word.text)) // Filter out Arabic numerals
+  .map(word => word.text)
+  .join(' ');
+
+  console.log('🔍 Expected Ayah Text:', expectedAyahText);
+  
   
   try {
     console.log('📝 Transcription request received from:', req.ip);
@@ -207,7 +263,7 @@ app.post('/transcribe', upload.single('file'), async (req, res) => {
     
     // Return plain text response
     res.set('Content-Type', 'text/plain');
-    res.send(transcriptionText);
+    res.send(expectedAyahText === transcriptionText ? true : false);
 
   } catch (error) {
     const processingTime = Date.now() - startTime;
@@ -297,6 +353,7 @@ app.use((req, res) => {
       'GET /test': 'Test endpoint',
       'POST /test-upload': 'Test file upload',
       'POST /transcribe': 'Audio transcription (Hugging Face Whisper)'
+      
     }
   });
 });
