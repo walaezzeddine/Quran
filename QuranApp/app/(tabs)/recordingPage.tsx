@@ -8,7 +8,6 @@ import {
   setAudioModeAsync,
   useAudioPlayer,
 } from 'expo-audio';
-
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -80,7 +79,7 @@ export default function RecordingPage() {
 
       // Make the API request to your Node.js transcription server
       const apiUrl = __DEV__ 
-        ? 'http://192.168.100.140:3001/transcribe'  // Development server
+        ? 'http://192.168.100.151:3001/transcribe'  // Development server
         : 'https://your-production-server.com/transcribe';  // Replace with your production URL
       
       console.log('Making request to:', apiUrl);
@@ -185,7 +184,15 @@ export default function RecordingPage() {
     <View style={styles.container}>
       {/* Transcription Display Area */}
       <View style={styles.transcriptionContainer}>
-        <Text style={styles.transcriptionTitle}>Transcription:</Text>
+        <View style={styles.headerContainer}>
+          <TouchableOpacity 
+            style={styles.backButton}
+            onPress={() => router.back()}
+          >
+            <Ionicons name="arrow-back" size={24} color="#333" />
+          </TouchableOpacity>
+          <Text style={styles.transcriptionTitle}>Transcription:</Text>
+        </View>
         <ScrollView style={styles.transcriptionScrollView}>
           {isTranscribing ? (
             <View style={styles.loadingContainer}>
@@ -254,10 +261,18 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 60, // Account for status bar
   },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  backButton: {
+    padding: 8,
+    marginRight: 10,
+  },
   transcriptionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
     color: '#333',
   },
   transcriptionScrollView: {
