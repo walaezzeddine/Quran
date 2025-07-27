@@ -199,18 +199,60 @@ app.get('/data/pages/:pageNumber', (req, res) => {
 app.post('/transcribe', upload.single('file'), async (req, res) => {
   const startTime = Date.now();
   const ayah = req.query.ayah;
-  const page = req.query.page;
-  const expectedAyahText = getDataPerPage(page).surahs[0].ayahs.find(a => a.ayahNum === parseInt(ayah))?.words
-  .filter(word => !/^[٠-٩]+$/.test(word.text)) // Filter out Arabic numerals
-  .map(word => word.text)
-  .join(' ');
+  const page = req.query.pageNumber; // Changed from req.query.page to match frontend
+  
+  // Validate required parameters
+  if (!page || !ayah) {
+    return res.status(400).json({
+      error: 'Missing required parameters',
+      success: false,
+      hint: 'Both pageNumber and ayah parameters are required'
+    });
+  }
+  
+  // Validate that parameters are valid numbers
+  const pageNum = parseInt(page);
+  const ayahNum = parseInt(ayah);
+  
+  if (isNaN(pageNum) || isNaN(ayahNum) || pageNum < 1 || ayahNum < 1) {
+    return res.status(400).json({
+      error: 'Invalid parameter values',
+      success: false,
+      hint: 'pageNumber and ayah must be positive integers'
+    });
+  }
 
-  console.log('🔍 Expected Ayah Text:', expectedAyahText);
-  
-  
   try {
+    // Get page data with error handling
+    let pageData;
+    try {
+      pageData = getDataPerPage(pageNum);
+    } catch (error) {
+      console.error('Error loading page data:', error);
+      return res.status(404).json({
+        error: `Page ${pageNum} not found`,
+        success: false,
+        hint: 'Please check if the page number is valid'
+      });
+    }
+
+    // Find the expected ayah text
+    const expectedAyahText = pageData.surahs[0].ayahs.find(a => a.ayahNum === ayahNum)?.words
+      .filter(word => !/^[٠-٩]+$/.test(word.text)) // Filter out Arabic numerals
+      .map(word => word.text)
+      .join(' ');
+
+    if (!expectedAyahText) {
+      return res.status(404).json({
+        error: `Ayah ${ayahNum} not found on page ${pageNum}`,
+        success: false
+      });
+    }
+
+    console.log('🔍 Expected Ayah Text:', expectedAyahText);
     console.log('📝 Transcription request received from:', req.ip);
     console.log('📱 User Agent:', req.get('User-Agent'));
+    console.log('📄 Page:', pageNum, 'Ayah:', ayahNum);
     
     if (!req.file) {
       console.error('❌ No file provided in request');
@@ -227,6 +269,70 @@ app.post('/transcribe', upload.single('file'), async (req, res) => {
       size: `${(req.file.size / 1024 / 1024).toFixed(2)} MB`,
       buffer_length: req.file.buffer.length,
     });
+
+    // Define compareTexts function
+    const compareTexts = (transcribed, expected) => {
+      const removeDiacritics = (text) => {
+        if (!text) return '';
+        return text
+          .replace(/[\u064B-\u0652\u0670\u0640\u06D6-\u06ED]/g, '')
+          .replace(/\s+/g, ' ')
+          .normalize('NFD')
+          .trim();
+      };
+
+      // Remove diacritics and normalize both texts
+      const cleanTranscribed = removeDiacritics(transcribed);
+      const cleanExpected = removeDiacritics(expected);
+      
+      console.log('🧹 Clean Transcribed:', cleanTranscribed);
+      console.log('🧹 Clean Expected:', cleanExpected);
+      
+      const baseMatch = cleanTranscribed === cleanExpected;
+      const fullMatch = transcribed.trim() === expected.trim();
+      
+      // Calculate similarity percentage for partial matches
+      let accuracy = 0;
+      if (baseMatch) {
+        accuracy = fullMatch ? 100 : 85;
+      } else {
+        // Simple similarity calculation
+        const similarity = calculateSimilarity(cleanTranscribed, cleanExpected);
+        accuracy = similarity;
+      }
+      
+      return {
+        isBaseCorrect: baseMatch,
+        isFullCorrect: fullMatch,
+        accuracy: accuracy,
+        feedback: baseMatch ? 
+          (fullMatch ? 'Parfait! ✅' : 'Bon mais attention aux diacritiques 📝') : 
+          `Répétez s'il vous plaît - Précision: ${accuracy}% 🔄`,
+        cleanTranscribed: cleanTranscribed,
+        cleanExpected: cleanExpected
+      };
+    };
+
+    // Simple similarity calculation function
+    const calculateSimilarity = (str1, str2) => {
+      if (str1 === str2) return 100;
+      if (!str1 || !str2) return 0;
+      
+      const longer = str1.length > str2.length ? str1 : str2;
+      const shorter = str1.length > str2.length ? str2 : str1;
+      
+      if (longer.length === 0) return 100;
+      
+      // Simple character-based similarity
+      let matches = 0;
+      const minLength = Math.min(str1.length, str2.length);
+      
+      for (let i = 0; i < minLength; i++) {
+        if (str1[i] === str2[i]) matches++;
+      }
+      
+      return Math.round((matches / longer.length) * 100);
+    };
 
     // Validate file size
     if (req.file.size === 0) {
@@ -260,10 +366,31 @@ app.post('/transcribe', upload.single('file'), async (req, res) => {
     console.log('⏱️ Processing time:', `${processingTime}ms`);
     console.log('📝 Transcription length:', transcriptionText.length, 'characters');
     console.log('📝 Transcription preview:', transcriptionText.substring(0, 100) + '...');
+    console.log('🔍 Full Transcribed Text:', transcriptionText);
     
-    // Return plain text response
-    res.set('Content-Type', 'text/plain');
-    res.send(expectedAyahText === transcriptionText ? true : false);
+    // Use the compareTexts function for intelligent comparison
+    const comparisonResult = compareTexts(transcriptionText, expectedAyahText);
+    
+    console.log('📊 Comparison Result:', comparisonResult);
+
+    // Return detailed JSON response
+    res.json({
+      success: true,
+      transcription: transcriptionText,
+      expected: expectedAyahText,
+      comparison: {
+        isCorrect: comparisonResult.isBaseCorrect,
+        isFullCorrect: comparisonResult.isFullCorrect,
+        accuracy: comparisonResult.accuracy,
+        feedback: comparisonResult.feedback,
+        details: {
+          cleanTranscribed: comparisonResult.cleanTranscribed,
+          cleanExpected: comparisonResult.cleanExpected
+        }
+      },
+      shouldProceed: comparisonResult.accuracy >= 80, // Threshold for moving to next ayah
+      processingTime: `${processingTime}ms`
+    });
 
   } catch (error) {
     const processingTime = Date.now() - startTime;
