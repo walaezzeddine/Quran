@@ -5,7 +5,9 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const axios = require('axios');
+const FormData = require('form-data');
 require('dotenv').config();
+const ffmpeg = require('fluent-ffmpeg');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -64,6 +66,42 @@ if (!process.env.HUGGING_FACE_API_KEY) {
   console.error('❌ Error: HUGGING_FACE_API_KEY environment variable is required');
   console.log('💡 Get your API key from: https://huggingface.co/settings/tokens');
   process.exit(1);
+}
+
+async function convertToWav(inputBuffer, originalName) {
+  return new Promise((resolve, reject) => {
+    const tempInputPath = path.join(__dirname, 'temp', `input_${Date.now()}.m4a`);
+    const tempOutputPath = path.join(__dirname, 'temp', `output_${Date.now()}.wav`);
+    
+    // Ensure temp directory exists
+    fs.mkdirSync(path.dirname(tempInputPath), { recursive: true });
+    
+    // Write buffer to temp file
+    fs.writeFileSync(tempInputPath, inputBuffer);
+    
+    ffmpeg(tempInputPath)
+      .audioCodec('pcm_s16le')
+      .audioChannels(1)
+      .audioFrequency(16000)
+      .format('wav')
+      .on('end', () => {
+        // Read converted file
+        const wavBuffer = fs.readFileSync(tempOutputPath);
+        
+        // Clean up temp files
+        fs.unlinkSync(tempInputPath);
+        fs.unlinkSync(tempOutputPath);
+        
+        resolve(wavBuffer);
+      })
+      .on('error', (err) => {
+        // Clean up on error
+        if (fs.existsSync(tempInputPath)) fs.unlinkSync(tempInputPath);
+        if (fs.existsSync(tempOutputPath)) fs.unlinkSync(tempOutputPath);
+        reject(err);
+      })
+      .save(tempOutputPath);
+  });
 }
 
 // Function to query Hugging Face API
@@ -320,6 +358,165 @@ app.post('/transcribe', upload.single('file'), async (req, res) => {
   }
 });
 
+app.post('/transcribe/test', upload.single('file'), async (req, res) => {
+  const startTime = Date.now();
+ 
+  try {
+    console.log('📝 Transcription request received from:', req.ip);
+    console.log('📱 User Agent:', req.get('User-Agent'));
+   
+    if (!req.file) {
+      console.error('❌ No file provided in request');
+      return res.status(400).json({
+        error: 'No audio file provided. Please select an audio file.',
+        success: false,
+        hint: 'Make sure you are sending the file with the key "file" in the form data'
+      });
+    }
+
+    console.log('📁 File details:', {
+      originalname: req.file.originalname,
+      mimetype: req.file.mimetype,
+      size: `${(req.file.size / 1024 / 1024).toFixed(2)} MB`,
+      buffer_length: req.file.buffer.length,
+    });
+
+    // Validate file size
+    if (req.file.size === 0) {
+      return res.status(400).json({
+        error: 'Empty file provided',
+        success: false
+      });
+    }
+
+    console.log('🎤 Starting Python Whisper server transcription...');
+
+    let audioBuffer = req.file.buffer;
+    
+    // Convert m4a to wav if needed
+    if (req.file.mimetype.includes('m4a') || req.file.originalname.includes('.m4a')) {
+      console.log('🔄 Converting m4a to wav...');
+      audioBuffer = await convertToWav(req.file.buffer, req.file.originalname);
+      console.log('✅ Conversion completed');
+    }
+    
+    // Forward the request to your Python Whisper server
+        const result = await forwardToWhisperServer({
+      ...req.file,
+      buffer: audioBuffer,
+      mimetype: 'audio/wav'
+    });
+    
+    const processingTime = Date.now() - startTime;
+   
+    console.log('✅ Transcription completed successfully');
+    console.log('⏱️ Processing time:', `${processingTime}ms`);
+    console.log('📝 Transcription length:', result.length, 'characters');
+    console.log('📝 Transcription preview:', result.substring(0, 100) + '...');
+   
+    // Return plain text response (same format as before)
+    res.set('Content-Type', 'text/plain');
+    res.send(result);
+
+  } catch (error) {
+    const processingTime = Date.now() - startTime;
+    console.error('❌ Transcription failed:', error);
+    console.error('⏱️ Failed after:', `${processingTime}ms`);
+    
+    // Handle specific Python server errors
+    if (error.code === 'ECONNREFUSED') {
+      return res.status(503).json({
+        error: 'Whisper server is not running',
+        success: false,
+        hint: 'Please start the Python Whisper server first'
+      });
+    }
+    
+    if (error.code === 'ECONNRESET' || error.code === 'ETIMEDOUT') {
+      return res.status(503).json({
+        error: 'Network timeout connecting to Whisper server',
+        success: false
+      });
+    }
+
+    if (error.response?.status === 413) {
+      return res.status(400).json({
+        error: 'Audio file is too large',
+        success: false,
+        hint: 'Try reducing the file size or duration'
+      });
+    }
+
+    if (error.response?.status === 503) {
+      return res.status(503).json({
+        error: 'Whisper server is initializing. Please try again in a few moments',
+        success: false
+      });
+    }
+
+    // Generic error response
+    res.status(500).json({
+      error: 'Failed to transcribe audio',
+      details: error?.message || 'Unknown error occurred',
+      success: false,
+      serverResponse: error.response?.data || null
+    });
+  }
+});
+
+// Helper function to forward requests to Python Whisper server
+async function forwardToWhisperServer(file) {
+  // Configure your Python server URL
+  const WHISPER_SERVER_URL = process.env.WHISPER_SERVER_URL || 'http://127.0.0.1:5000';
+  
+  try {
+    // Create FormData for the Python server
+    const formData = new FormData();
+    
+    // Append the file buffer directly
+    formData.append('file', file.buffer, {
+      filename: file.originalname || 'audio.m4a',
+      contentType: file.mimetype || 'audio/m4a'
+    });
+
+    console.log('🔄 Forwarding to Python server:', `${WHISPER_SERVER_URL}/transcribe`);
+    console.log('📁 File info being sent:', {
+      filename: file.originalname || 'audio.m4a',
+      contentType: file.mimetype || 'audio/m4a',
+      size: file.buffer.length
+    });
+
+    const response = await axios.post(`${WHISPER_SERVER_URL}/transcribe`, formData, {
+      headers: {
+        ...formData.getHeaders(),
+      },
+      timeout: 60000, // 60 second timeout
+      maxContentLength: Infinity,
+      maxBodyLength: Infinity
+    });
+
+    // Python server returns plain text
+    return response.data;
+
+  } catch (error) {
+    console.error('Error forwarding to Whisper server:', error);
+    
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      console.error('Python server error:', error.response.status, error.response.data);
+      throw new Error(`Whisper server responded with status ${error.response.status}: ${JSON.stringify(error.response.data)}`);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error('No response received:', error.request);
+      throw new Error('No response from Whisper server');
+    } else {
+      // Something happened in setting up the request
+      console.error('Request setup error:', error.message);
+      throw error;
+    }
+  }
+}
+
 // Error handling middleware
 app.use((error, req, res, next) => {
   if (error instanceof multer.MulterError) {
@@ -360,7 +557,7 @@ app.use((req, res) => {
 
 // Start server
 const localIP = getLocalIP();
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, '192.168.100.188', () => {
   console.log('🚀 Hugging Face Whisper Transcription API Server started');
   console.log('📡 Local access:', `http://localhost:${PORT}`);
   console.log('📱 Mobile access:', `http://${localIP}:${PORT}`);
