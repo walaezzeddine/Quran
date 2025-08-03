@@ -13,6 +13,35 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function RecordingPage() {
+
+//   const customRecordingOptions: RecordingOptions = {
+//   ...RecordingPresets.HIGH_QUALITY,
+//   android: {
+//     extension: '.wav',
+//     outputFormat: 'wav',
+//     audioEncoder: 'pcm_16bit',
+//     sampleRate: 16000,
+//     numberOfChannels: 1,
+//     bitRate: 256000,
+//   },
+//   ios: {
+//     extension: '.wav',
+//     outputFormat: 'wav',
+//     audioQuality: 'MAX',
+//     sampleRate: 16000,
+//     numberOfChannels: 1,
+//     bitRate: 256000,
+//     linearPCMBitDepth: 16,
+//     linearPCMIsBigEndian: false,
+//     linearPCMIsFloat: false,
+//   },
+//   web: {
+//     mimeType: 'audio/wav',
+//     bitsPerSecond: 256000,
+//   },
+// };
+
+
   const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
   const recorderState = useAudioRecorderState(audioRecorder);
   const router = useRouter();
@@ -50,62 +79,99 @@ export default function RecordingPage() {
     })();
   }, []);
 
-  const transcribeAudio = async (audioUri: string) => {
-    if (!audioUri) {
-      Alert.alert('Error', 'No audio file to transcribe');
-      return;
-    }
+const transcribeAudio = async (audioUri: string) => {
+  if (!audioUri) {
+    Alert.alert('Error', 'No audio file to transcribe');
+    return;
+  }
 
-    setIsTranscribing(true);
-    setTranscription('');
+  setIsTranscribing(true);
+  setTranscription('');
 
-    try {
-      console.log('Starting transcription for:', audioUri);
-      
-      // Create FormData for the API request
-      const formData = new FormData();
-      
-      // Convert the file URI to a blob/file for upload
-      const fileUri = audioUri.startsWith('file://') ? audioUri : `file://${audioUri}`;
-      
-      // For React Native, we need to create a file object
-      const fileBlob = {
-        uri: fileUri,
-        type: 'audio/m4a', // or 'audio/wav' depending on your recording format
-        name: 'recording.m4a',
-      } as any;
-      
-      formData.append('file', fileBlob);
+  try {
+    console.log('Starting transcription for:', audioUri);
+    
+    // Create FormData for the API request
+    const formData = new FormData();
+    
+    // Convert the file URI to a blob/file for upload
+    const fileUri = audioUri.startsWith('file://') ? audioUri : `file://${audioUri}`;
+    
+    // For React Native, we need to create a file object
+    const fileBlob = {
+      uri: fileUri,
+      type: 'audio/m4a', // or 'audio/wav' depending on your recording format
+      name: 'recording.m4a',
+    } as any;
+    
+    formData.append('file', fileBlob);
 
-      // Make the API request to your Node.js transcription server
-      const apiUrl = __DEV__ 
-        ? 'http://192.168.100.151:3001/transcribe'  // Development server
-        : 'https://your-production-server.com/transcribe';  // Replace with your production URL
-      
-      console.log('Making request to:', apiUrl);
-      
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        body: formData,
-        // Don't set Content-Type header - let the browser set it for FormData
-      });
+    // Make the API request to your Node.js server (which forwards to Python)
+    const apiUrl = __DEV__ 
+      ? 'http://192.168.100.248:3001/transcribe/test'  // Development server
+      : 'https://your-production-server.com/transcribe/test';  // Replace with your production URL
+    
+    console.log('Making request to:', apiUrl);
+    
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      body: formData,
+    });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    if (!response.ok) {
+      // Try to get error details from the response
+      let errorMessage = `HTTP error! status: ${response.status}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorData.details || errorMessage;
+        
+        // Handle specific error cases
+        if (response.status === 503) {
+          errorMessage = 'Transcription server is starting up. Please try again in a moment.';
+        } else if (response.status === 413) {
+          errorMessage = 'Audio file is too large. Please record a shorter clip.';
+        }
+      } catch (e) {
+        // Response is not JSON, use the text
+        const errorText = await response.text();
+        errorMessage = errorText || errorMessage;
       }
-
-      const result = await response.text();
-      setTranscription(result);
-      console.log('Transcription successful:', result);
-
-    } catch (error) {
-      console.error('Transcription failed:', error);
-      Alert.alert('Transcription Error', 'Failed to transcribe the audio. Please try again.');
-      setTranscription('Transcription failed. Please try again.');
-    } finally {
-      setIsTranscribing(false);
+      
+      throw new Error(errorMessage);
     }
-  };
+
+    const result = await response.text();
+    setTranscription(result);
+    console.log('Transcription successful:', result);
+
+  } catch (error) {
+    console.error('Transcription failed:', error);
+    
+    let userMessage = 'Failed to transcribe the audio. Please try again.';
+    let errorMessage = '';
+
+    // Safely extract error message if possible
+    if (typeof error === 'object' && error !== null && 'message' in error && typeof (error as any).message === 'string') {
+      errorMessage = (error as any).message;
+    }
+
+    // Provide more specific error messages
+    if (errorMessage.includes('Network request failed') || errorMessage.includes('ECONNREFUSED')) {
+      userMessage = 'Cannot connect to transcription server. Please check your connection.';
+    } else if (errorMessage.includes('timeout')) {
+      userMessage = 'Transcription is taking too long. Please try with a shorter audio clip.';
+    } else if (errorMessage.includes('server is starting')) {
+      userMessage = 'Transcription server is starting up. Please try again in a moment.';
+    } else if (errorMessage.includes('too large')) {
+      userMessage = 'Audio file is too large. Please record a shorter clip.';
+    }
+    
+    Alert.alert('Transcription Error', userMessage);
+    setTranscription('Transcription failed. Please try again.');
+  } finally {
+    setIsTranscribing(false);
+  }
+};
 
   const startRecording = async () => {
     try {

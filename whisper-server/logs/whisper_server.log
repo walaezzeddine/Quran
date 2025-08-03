@@ -1,0 +1,260 @@
+2025-07-26 17:29:13,285 - __main__ - INFO - Initializing Whisper server...
+2025-07-26 17:29:13,286 - __main__ - INFO - Model: tarteel-ai/whisper-tiny-ar-quran
+2025-07-26 17:29:13,286 - __main__ - INFO - Device: cpu
+2025-07-26 17:29:13,286 - utils.model_manager - INFO - Loading model: tarteel-ai/whisper-tiny-ar-quran
+2025-07-26 17:29:13,286 - utils.model_manager - INFO - Device: cpu
+2025-07-26 17:30:51,693 - utils.model_manager - INFO - Model loaded successfully
+2025-07-26 17:30:51,694 - __main__ - INFO - Server initialization completed successfully
+2025-07-26 17:30:51,694 - __main__ - INFO - Starting Whisper server on 0.0.0.0:5000
+2025-07-26 17:30:51,703 - __main__ - INFO - Debug mode: False
+2025-07-26 17:30:53,042 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.123.25:5000
+2025-07-26 17:30:53,043 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-27 13:07:12,516 - __main__ - INFO - Initializing Whisper server...
+2025-07-27 13:07:12,516 - __main__ - INFO - Model: tarteel-ai/whisper-tiny-ar-quran
+2025-07-27 13:07:12,516 - __main__ - INFO - Device: cpu
+2025-07-27 13:07:12,517 - utils.model_manager - INFO - Loading model: tarteel-ai/whisper-tiny-ar-quran
+2025-07-27 13:07:12,517 - utils.model_manager - INFO - Device: cpu
+2025-07-27 13:07:15,704 - utils.model_manager - INFO - Model loaded successfully
+2025-07-27 13:07:15,707 - __main__ - INFO - Server initialization completed successfully
+2025-07-27 13:07:15,709 - __main__ - INFO - Starting Whisper server on 0.0.0.0:5000
+2025-07-27 13:07:15,710 - __main__ - INFO - Debug mode: False
+2025-07-27 13:07:16,996 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.188:5000
+2025-07-27 13:07:16,997 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-27 13:13:01,275 - werkzeug - INFO - 127.0.0.1 - - [27/Jul/2025 13:13:01] "[31m[1mPOST /health HTTP/1.1[0m" 405 -
+2025-07-27 13:13:18,484 - werkzeug - INFO - 127.0.0.1 - - [27/Jul/2025 13:13:18] "[31m[1mPOST /health HTTP/1.1[0m" 405 -
+2025-07-27 13:13:32,283 - werkzeug - INFO - 127.0.0.1 - - [27/Jul/2025 13:13:32] "GET /health HTTP/1.1" 200 -
+2025-07-27 13:18:17,296 - werkzeug - INFO - 127.0.0.1 - - [27/Jul/2025 13:18:17] "[31m[1mPOST /transcribe HTTP/1.1[0m" 400 -
+2025-07-27 13:22:02,595 - __main__ - INFO - Processing file: recording.m4a
+2025-07-27 13:22:02,595 - __main__ - INFO - Content type: audio/x-m4a
+2025-07-27 13:22:09,335 - __main__ - ERROR - Transcription failed after 6.75s: Failed to load audio: 
+2025-07-27 13:22:09,336 - werkzeug - INFO - 127.0.0.1 - - [27/Jul/2025 13:22:09] "[35m[1mPOST /transcribe HTTP/1.1[0m" 500 -
+2025-07-27 13:25:11,015 - __main__ - INFO - Processing file: recording.m4a
+2025-07-27 13:25:11,016 - __main__ - INFO - Content type: audio/x-m4a
+2025-07-27 13:25:11,053 - __main__ - ERROR - Transcription failed after 0.04s: Failed to load audio: 
+2025-07-27 13:25:11,055 - werkzeug - INFO - 127.0.0.1 - - [27/Jul/2025 13:25:11] "[35m[1mPOST /transcribe HTTP/1.1[0m" 500 -
+2025-07-27 13:36:09,454 - __main__ - INFO - Processing file: recording.wav
+2025-07-27 13:36:09,454 - __main__ - INFO - Content type: audio/x-m4a
+2025-07-27 13:36:09,489 - __main__ - ERROR - Transcription failed after 0.04s: Failed to load audio: 
+2025-07-27 13:36:09,490 - werkzeug - INFO - 127.0.0.1 - - [27/Jul/2025 13:36:09] "[35m[1mPOST /transcribe HTTP/1.1[0m" 500 -
+2025-07-27 13:40:26,062 - __main__ - INFO - Processing file: recording.m4a
+2025-07-27 13:40:26,062 - __main__ - INFO - Content type: audio/x-m4a
+2025-07-27 13:40:26,077 - __main__ - ERROR - Transcription failed after 0.02s: Failed to load audio: 
+2025-07-27 13:40:26,078 - werkzeug - INFO - 127.0.0.1 - - [27/Jul/2025 13:40:26] "[35m[1mPOST /transcribe HTTP/1.1[0m" 500 -
+2025-07-27 13:43:07,023 - __main__ - INFO - Processing file: recording.m4a
+2025-07-27 13:43:07,024 - __main__ - INFO - Content type: audio/x-m4a
+2025-07-27 13:43:07,049 - __main__ - ERROR - Transcription failed after 0.03s: Failed to load audio: 
+2025-07-27 13:43:07,050 - werkzeug - INFO - 127.0.0.1 - - [27/Jul/2025 13:43:07] "[35m[1mPOST /transcribe HTTP/1.1[0m" 500 -
+2025-07-27 13:47:19,387 - __main__ - INFO - Processing file: recording.m4a
+2025-07-27 13:47:19,387 - __main__ - INFO - Content type: audio/x-m4a
+2025-07-27 13:47:19,405 - __main__ - ERROR - Transcription failed after 0.02s: Failed to load audio: 
+2025-07-27 13:47:19,406 - werkzeug - INFO - 127.0.0.1 - - [27/Jul/2025 13:47:19] "[35m[1mPOST /transcribe HTTP/1.1[0m" 500 -
+2025-07-27 14:06:22,608 - utils.audio_processor - INFO - AudioProcessor initialized with target sample rate: 16000Hz
+2025-07-27 14:06:22,609 - __main__ - INFO - Initializing Whisper server...
+2025-07-27 14:06:22,609 - __main__ - INFO - Model: tarteel-ai/whisper-tiny-ar-quran
+2025-07-27 14:06:22,609 - __main__ - INFO - Device: cpu
+2025-07-27 14:06:22,609 - utils.model_manager - INFO - Loading model: tarteel-ai/whisper-tiny-ar-quran
+2025-07-27 14:06:22,609 - utils.model_manager - INFO - Device: cpu
+2025-07-27 14:06:25,646 - utils.model_manager - INFO - Model loaded successfully
+2025-07-27 14:06:25,647 - __main__ - INFO - Server initialization completed successfully
+2025-07-27 14:06:25,647 - __main__ - INFO - Starting Whisper server on 0.0.0.0:5000
+2025-07-27 14:06:25,648 - __main__ - INFO - Debug mode: False
+2025-07-27 14:06:25,659 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.188:5000
+2025-07-27 14:06:25,659 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-27 14:12:34,798 - utils.audio_processor - INFO - AudioProcessor initialized with target sample rate: 16000Hz
+2025-07-27 14:12:34,799 - __main__ - INFO - Initializing Whisper server...
+2025-07-27 14:12:34,799 - __main__ - INFO - Model: tarteel-ai/whisper-tiny-ar-quran
+2025-07-27 14:12:34,799 - __main__ - INFO - Device: cpu
+2025-07-27 14:12:34,799 - utils.model_manager - INFO - Loading model: tarteel-ai/whisper-tiny-ar-quran
+2025-07-27 14:12:34,799 - utils.model_manager - INFO - Device: cpu
+2025-07-27 14:12:37,106 - utils.model_manager - INFO - Model loaded successfully
+2025-07-27 14:12:37,106 - __main__ - INFO - Server initialization completed successfully
+2025-07-27 14:12:37,106 - __main__ - INFO - Starting Whisper server on 0.0.0.0:5000
+2025-07-27 14:12:37,106 - __main__ - INFO - Debug mode: False
+2025-07-27 14:12:37,110 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.188:5000
+2025-07-27 14:12:37,112 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-27 14:13:09,588 - __main__ - INFO - Processing file: recording.m4a
+2025-07-27 14:13:09,588 - __main__ - INFO - Content type: audio/wav
+2025-07-27 14:13:09,591 - utils.audio_processor - INFO - Saved temporary file: C:\Users\hloau\AppData\Local\Temp\tmp4yiu2xq1.m4a (size: 104104 bytes)
+2025-07-27 14:13:09,591 - utils.audio_processor - INFO - Loading audio file: C:\Users\hloau\AppData\Local\Temp\tmp4yiu2xq1.m4a
+2025-07-27 14:13:09,591 - utils.audio_processor - INFO - File extension: .m4a
+2025-07-27 14:13:09,591 - utils.audio_processor - INFO - Trying pydub for M4A/AAC file...
+2025-07-27 14:13:10,591 - utils.audio_processor - INFO - Successfully loaded with pydub: torch.Size([1, 52013]), sr=16000
+2025-07-27 14:13:10,592 - utils.audio_processor - INFO - Preprocessing audio: shape=torch.Size([1, 52013]), sr=16000
+2025-07-27 14:13:10,597 - utils.audio_processor - INFO - Audio normalized
+2025-07-27 14:13:10,597 - utils.audio_processor - INFO - Preprocessing complete: final shape=torch.Size([52013])
+2025-07-27 14:13:10,597 - __main__ - INFO - Audio loaded: 3.25s at 16000Hz
+2025-07-27 14:13:11,357 - __main__ - INFO - Transcription completed in 1.77s
+2025-07-27 14:13:11,466 - utils.audio_processor - INFO - Cleaned up temporary file: C:\Users\hloau\AppData\Local\Temp\tmp4yiu2xq1.m4a
+2025-07-27 14:13:11,467 - werkzeug - INFO - 127.0.0.1 - - [27/Jul/2025 14:13:11] "POST /transcribe HTTP/1.1" 200 -
+2025-07-27 14:13:28,518 - __main__ - INFO - Processing file: recording.m4a
+2025-07-27 14:13:28,518 - __main__ - INFO - Content type: audio/wav
+2025-07-27 14:13:28,519 - utils.audio_processor - INFO - Saved temporary file: C:\Users\hloau\AppData\Local\Temp\tmp8lcjz2qj.m4a (size: 107818 bytes)
+2025-07-27 14:13:28,520 - utils.audio_processor - INFO - Loading audio file: C:\Users\hloau\AppData\Local\Temp\tmp8lcjz2qj.m4a
+2025-07-27 14:13:28,520 - utils.audio_processor - INFO - File extension: .m4a
+2025-07-27 14:13:28,521 - utils.audio_processor - INFO - Trying pydub for M4A/AAC file...
+2025-07-27 14:13:28,604 - utils.audio_processor - INFO - Successfully loaded with pydub: torch.Size([1, 53870]), sr=16000
+2025-07-27 14:13:28,604 - utils.audio_processor - INFO - Preprocessing audio: shape=torch.Size([1, 53870]), sr=16000
+2025-07-27 14:13:28,605 - utils.audio_processor - INFO - Audio normalized
+2025-07-27 14:13:28,605 - utils.audio_processor - INFO - Preprocessing complete: final shape=torch.Size([53870])
+2025-07-27 14:13:28,606 - __main__ - INFO - Audio loaded: 3.37s at 16000Hz
+2025-07-27 14:13:29,533 - __main__ - INFO - Transcription completed in 1.02s
+2025-07-27 14:13:29,536 - utils.audio_processor - INFO - Cleaned up temporary file: C:\Users\hloau\AppData\Local\Temp\tmp8lcjz2qj.m4a
+2025-07-27 14:13:29,536 - werkzeug - INFO - 127.0.0.1 - - [27/Jul/2025 14:13:29] "POST /transcribe HTTP/1.1" 200 -
+2025-07-27 15:05:58,223 - utils.audio_processor - INFO - AudioProcessor initialized with target sample rate: 16000Hz
+2025-07-27 15:05:58,225 - __main__ - INFO - Initializing Whisper server...
+2025-07-27 15:05:58,225 - __main__ - INFO - Model: tarteel-ai/whisper-tiny-ar-quran
+2025-07-27 15:05:58,226 - __main__ - INFO - Device: cpu
+2025-07-27 15:05:58,226 - utils.model_manager - INFO - Loading model: tarteel-ai/whisper-tiny-ar-quran
+2025-07-27 15:05:58,226 - utils.model_manager - INFO - Device: cpu
+2025-07-27 15:06:35,126 - utils.model_manager - INFO - Model loaded successfully
+2025-07-27 15:06:35,126 - __main__ - INFO - Server initialization completed successfully
+2025-07-27 15:06:35,126 - __main__ - INFO - Starting Whisper server on 0.0.0.0:5000
+2025-07-27 15:06:35,127 - __main__ - INFO - Debug mode: False
+2025-07-27 15:06:35,139 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.151:5000
+2025-07-27 15:06:35,139 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-27 15:23:24,360 - __main__ - INFO - Processing file: recording.m4a
+2025-07-27 15:23:24,360 - __main__ - INFO - Content type: audio/wav
+2025-07-27 15:23:24,362 - utils.audio_processor - INFO - Saved temporary file: C:\Users\Lenovo\AppData\Local\Temp\tmpxbc1p0k2.m4a (size: 95930 bytes)
+2025-07-27 15:23:24,362 - utils.audio_processor - INFO - Loading audio file: C:\Users\Lenovo\AppData\Local\Temp\tmpxbc1p0k2.m4a
+2025-07-27 15:23:24,362 - utils.audio_processor - INFO - File extension: .m4a
+2025-07-27 15:23:24,362 - utils.audio_processor - INFO - Trying pydub for M4A/AAC file...
+2025-07-27 15:23:24,545 - utils.audio_processor - INFO - Successfully loaded with pydub: torch.Size([1, 47926]), sr=16000
+2025-07-27 15:23:24,546 - utils.audio_processor - INFO - Preprocessing audio: shape=torch.Size([1, 47926]), sr=16000
+2025-07-27 15:23:24,552 - utils.audio_processor - INFO - Audio normalized
+2025-07-27 15:23:24,554 - utils.audio_processor - INFO - Preprocessing complete: final shape=torch.Size([47926])
+2025-07-27 15:23:24,554 - __main__ - INFO - Audio loaded: 3.00s at 16000Hz
+2025-07-27 15:23:25,597 - __main__ - INFO - Transcription completed in 1.24s
+2025-07-27 15:23:25,803 - utils.audio_processor - INFO - Cleaned up temporary file: C:\Users\Lenovo\AppData\Local\Temp\tmpxbc1p0k2.m4a
+2025-07-27 15:23:25,804 - werkzeug - INFO - 192.168.100.151 - - [27/Jul/2025 15:23:25] "POST /transcribe HTTP/1.1" 200 -
+2025-07-27 15:24:06,089 - __main__ - INFO - Processing file: recording.m4a
+2025-07-27 15:24:06,089 - __main__ - INFO - Content type: audio/wav
+2025-07-27 15:24:06,090 - utils.audio_processor - INFO - Saved temporary file: C:\Users\Lenovo\AppData\Local\Temp\tmpjta2dszm.m4a (size: 168004 bytes)
+2025-07-27 15:24:06,090 - utils.audio_processor - INFO - Loading audio file: C:\Users\Lenovo\AppData\Local\Temp\tmpjta2dszm.m4a
+2025-07-27 15:24:06,091 - utils.audio_processor - INFO - File extension: .m4a
+2025-07-27 15:24:06,091 - utils.audio_processor - INFO - Trying pydub for M4A/AAC file...
+2025-07-27 15:24:06,163 - utils.audio_processor - INFO - Successfully loaded with pydub: torch.Size([1, 83963]), sr=16000
+2025-07-27 15:24:06,164 - utils.audio_processor - INFO - Preprocessing audio: shape=torch.Size([1, 83963]), sr=16000
+2025-07-27 15:24:06,164 - utils.audio_processor - INFO - Audio normalized
+2025-07-27 15:24:06,165 - utils.audio_processor - INFO - Preprocessing complete: final shape=torch.Size([83963])
+2025-07-27 15:24:06,165 - __main__ - INFO - Audio loaded: 5.25s at 16000Hz
+2025-07-27 15:24:06,969 - __main__ - INFO - Transcription completed in 0.88s
+2025-07-27 15:24:06,972 - utils.audio_processor - INFO - Cleaned up temporary file: C:\Users\Lenovo\AppData\Local\Temp\tmpjta2dszm.m4a
+2025-07-27 15:24:06,972 - werkzeug - INFO - 192.168.100.151 - - [27/Jul/2025 15:24:06] "POST /transcribe HTTP/1.1" 200 -
+2025-07-27 15:26:45,573 - utils.audio_processor - INFO - AudioProcessor initialized with target sample rate: 16000Hz
+2025-07-27 15:26:45,574 - __main__ - INFO - Initializing Whisper server...
+2025-07-27 15:26:45,574 - __main__ - INFO - Model: Salama1429/tarteel-ai-whisper-base-ar-quran
+2025-07-27 15:26:45,574 - __main__ - INFO - Device: cpu
+2025-07-27 15:26:45,575 - utils.model_manager - INFO - Loading model: Salama1429/tarteel-ai-whisper-base-ar-quran
+2025-07-27 15:26:45,575 - utils.model_manager - INFO - Device: cpu
+2025-07-27 15:26:55,133 - huggingface_hub.file_download - WARNING - Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+2025-07-27 15:28:20,558 - utils.model_manager - INFO - Model loaded successfully
+2025-07-27 15:28:20,559 - __main__ - INFO - Server initialization completed successfully
+2025-07-27 15:28:20,559 - __main__ - INFO - Starting Whisper server on 0.0.0.0:5000
+2025-07-27 15:28:20,559 - __main__ - INFO - Debug mode: False
+2025-07-27 15:28:20,570 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.151:5000
+2025-07-27 15:28:20,570 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-27 15:28:20,942 - huggingface_hub.file_download - WARNING - Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+2025-07-27 15:31:12,279 - __main__ - INFO - Processing file: recording.m4a
+2025-07-27 15:31:12,279 - __main__ - INFO - Content type: audio/wav
+2025-07-27 15:31:12,281 - utils.audio_processor - INFO - Saved temporary file: C:\Users\Lenovo\AppData\Local\Temp\tmp0zzeifku.m4a (size: 114506 bytes)
+2025-07-27 15:31:12,281 - utils.audio_processor - INFO - Loading audio file: C:\Users\Lenovo\AppData\Local\Temp\tmp0zzeifku.m4a
+2025-07-27 15:31:12,282 - utils.audio_processor - INFO - File extension: .m4a
+2025-07-27 15:31:12,282 - utils.audio_processor - INFO - Trying pydub for M4A/AAC file...
+2025-07-27 15:31:12,348 - utils.audio_processor - INFO - Successfully loaded with pydub: torch.Size([1, 57214]), sr=16000
+2025-07-27 15:31:12,348 - utils.audio_processor - INFO - Preprocessing audio: shape=torch.Size([1, 57214]), sr=16000
+2025-07-27 15:31:12,350 - utils.audio_processor - INFO - Audio normalized
+2025-07-27 15:31:12,350 - utils.audio_processor - INFO - Preprocessing complete: final shape=torch.Size([57214])
+2025-07-27 15:31:12,350 - __main__ - INFO - Audio loaded: 3.58s at 16000Hz
+2025-07-27 15:31:13,529 - __main__ - INFO - Transcription completed in 1.25s
+2025-07-27 15:31:13,536 - utils.audio_processor - INFO - Cleaned up temporary file: C:\Users\Lenovo\AppData\Local\Temp\tmp0zzeifku.m4a
+2025-07-27 15:31:13,537 - werkzeug - INFO - 192.168.100.151 - - [27/Jul/2025 15:31:13] "POST /transcribe HTTP/1.1" 200 -
+2025-07-27 15:31:30,480 - __main__ - INFO - Processing file: recording.m4a
+2025-07-27 15:31:30,480 - __main__ - INFO - Content type: audio/wav
+2025-07-27 15:31:30,481 - utils.audio_processor - INFO - Saved temporary file: C:\Users\Lenovo\AppData\Local\Temp\tmp_1syj15i.m4a (size: 118966 bytes)
+2025-07-27 15:31:30,481 - utils.audio_processor - INFO - Loading audio file: C:\Users\Lenovo\AppData\Local\Temp\tmp_1syj15i.m4a
+2025-07-27 15:31:30,482 - utils.audio_processor - INFO - File extension: .m4a
+2025-07-27 15:31:30,482 - utils.audio_processor - INFO - Trying pydub for M4A/AAC file...
+2025-07-27 15:31:30,558 - utils.audio_processor - INFO - Successfully loaded with pydub: torch.Size([1, 59444]), sr=16000
+2025-07-27 15:31:30,558 - utils.audio_processor - INFO - Preprocessing audio: shape=torch.Size([1, 59444]), sr=16000
+2025-07-27 15:31:30,559 - utils.audio_processor - INFO - Audio normalized
+2025-07-27 15:31:30,559 - utils.audio_processor - INFO - Preprocessing complete: final shape=torch.Size([59444])
+2025-07-27 15:31:30,559 - __main__ - INFO - Audio loaded: 3.72s at 16000Hz
+2025-07-27 15:31:32,007 - __main__ - INFO - Transcription completed in 1.53s
+2025-07-27 15:31:32,010 - utils.audio_processor - INFO - Cleaned up temporary file: C:\Users\Lenovo\AppData\Local\Temp\tmp_1syj15i.m4a
+2025-07-27 15:31:32,010 - werkzeug - INFO - 192.168.100.151 - - [27/Jul/2025 15:31:32] "POST /transcribe HTTP/1.1" 200 -
+2025-08-01 17:10:31,934 - utils.audio_processor - INFO - AudioProcessor initialized with target sample rate: 16000Hz
+2025-08-01 17:10:31,936 - __main__ - INFO - Initializing Whisper server...
+2025-08-01 17:10:31,936 - __main__ - INFO - Model: Salama1429/tarteel-ai-whisper-base-ar-quran
+2025-08-01 17:10:31,937 - __main__ - INFO - Device: cpu
+2025-08-01 17:10:31,937 - utils.model_manager - INFO - Loading model: Salama1429/tarteel-ai-whisper-base-ar-quran
+2025-08-01 17:10:31,937 - utils.model_manager - INFO - Device: cpu
+2025-08-01 17:10:36,865 - utils.model_manager - INFO - Model loaded successfully
+2025-08-01 17:10:36,866 - __main__ - INFO - Server initialization completed successfully
+2025-08-01 17:10:36,866 - __main__ - INFO - Starting Whisper server on 0.0.0.0:5000
+2025-08-01 17:10:36,867 - __main__ - INFO - Debug mode: False
+2025-08-01 17:10:36,896 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.248:5000
+2025-08-01 17:10:36,896 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-08-01 17:11:12,327 - utils.audio_processor - INFO - AudioProcessor initialized with target sample rate: 16000Hz
+2025-08-01 17:11:12,328 - __main__ - INFO - Initializing Whisper server...
+2025-08-01 17:11:12,329 - __main__ - INFO - Model: Salama1429/tarteel-ai-whisper-base-ar-quran
+2025-08-01 17:11:12,329 - __main__ - INFO - Device: cpu
+2025-08-01 17:11:12,329 - utils.model_manager - INFO - Loading model: Salama1429/tarteel-ai-whisper-base-ar-quran
+2025-08-01 17:11:12,329 - utils.model_manager - INFO - Device: cpu
+2025-08-01 17:11:15,832 - utils.model_manager - INFO - Model loaded successfully
+2025-08-01 17:11:15,833 - __main__ - INFO - Server initialization completed successfully
+2025-08-01 17:11:15,833 - __main__ - INFO - Starting Whisper server on 0.0.0.0:5000
+2025-08-01 17:11:15,833 - __main__ - INFO - Debug mode: False
+2025-08-01 17:11:15,841 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.248:5000
+2025-08-01 17:11:15,842 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-08-01 17:12:33,575 - __main__ - INFO - Processing file: recording.m4a
+2025-08-01 17:12:33,575 - __main__ - INFO - Content type: audio/wav
+2025-08-01 17:12:33,577 - utils.audio_processor - INFO - Saved temporary file: C:\Users\Lenovo\AppData\Local\Temp\tmp6gidj6su.m4a (size: 135312 bytes)
+2025-08-01 17:12:33,578 - utils.audio_processor - INFO - Loading audio file: C:\Users\Lenovo\AppData\Local\Temp\tmp6gidj6su.m4a
+2025-08-01 17:12:33,578 - utils.audio_processor - INFO - File extension: .m4a
+2025-08-01 17:12:33,578 - utils.audio_processor - INFO - Trying pydub for M4A/AAC file...
+2025-08-01 17:12:33,895 - utils.audio_processor - INFO - Successfully loaded with pydub: torch.Size([1, 67617]), sr=16000
+2025-08-01 17:12:33,896 - utils.audio_processor - INFO - Preprocessing audio: shape=torch.Size([1, 67617]), sr=16000
+2025-08-01 17:12:33,902 - utils.audio_processor - INFO - Audio normalized
+2025-08-01 17:12:33,904 - utils.audio_processor - INFO - Preprocessing complete: final shape=torch.Size([67617])
+2025-08-01 17:12:33,905 - __main__ - INFO - Audio loaded: 4.23s at 16000Hz
+2025-08-01 17:12:36,483 - __main__ - INFO - Transcription completed in 2.91s
+2025-08-01 17:12:36,631 - utils.audio_processor - INFO - Cleaned up temporary file: C:\Users\Lenovo\AppData\Local\Temp\tmp6gidj6su.m4a
+2025-08-01 17:12:36,632 - werkzeug - INFO - 192.168.100.248 - - [01/Aug/2025 17:12:36] "POST /transcribe HTTP/1.1" 200 -
+2025-08-01 17:12:59,437 - __main__ - INFO - Processing file: recording.m4a
+2025-08-01 17:12:59,438 - __main__ - INFO - Content type: audio/wav
+2025-08-01 17:12:59,439 - utils.audio_processor - INFO - Saved temporary file: C:\Users\Lenovo\AppData\Local\Temp\tmpu1cd2_as.m4a (size: 168004 bytes)
+2025-08-01 17:12:59,439 - utils.audio_processor - INFO - Loading audio file: C:\Users\Lenovo\AppData\Local\Temp\tmpu1cd2_as.m4a
+2025-08-01 17:12:59,439 - utils.audio_processor - INFO - File extension: .m4a
+2025-08-01 17:12:59,439 - utils.audio_processor - INFO - Trying pydub for M4A/AAC file...
+2025-08-01 17:12:59,518 - utils.audio_processor - INFO - Successfully loaded with pydub: torch.Size([1, 83963]), sr=16000
+2025-08-01 17:12:59,518 - utils.audio_processor - INFO - Preprocessing audio: shape=torch.Size([1, 83963]), sr=16000
+2025-08-01 17:12:59,519 - utils.audio_processor - INFO - Audio normalized
+2025-08-01 17:12:59,519 - utils.audio_processor - INFO - Preprocessing complete: final shape=torch.Size([83963])
+2025-08-01 17:12:59,520 - __main__ - INFO - Audio loaded: 5.25s at 16000Hz
+2025-08-01 17:13:02,177 - __main__ - INFO - Transcription completed in 2.74s
+2025-08-01 17:13:02,181 - utils.audio_processor - INFO - Cleaned up temporary file: C:\Users\Lenovo\AppData\Local\Temp\tmpu1cd2_as.m4a
+2025-08-01 17:13:02,181 - werkzeug - INFO - 192.168.100.248 - - [01/Aug/2025 17:13:02] "POST /transcribe HTTP/1.1" 200 -
